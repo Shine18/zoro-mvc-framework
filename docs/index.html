@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Documentation - Zoro MVC Framework</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav" data-offset="0">
+    <nav class="navbar navbar-inverse navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand title="ZORO MVC" href="#"><img src="logo.png" alt=""></a>
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9" >
+          <section class="docs-section">
+            <h2 id="intro" class="page-header">Introduction</h2>
+            <p>
+              Zoro is an MVC framework written in PHP. It provides easy routing to create any PHP/website quickly. It is based on MVC (Model View Controller) concept.
+              You can create entities as models and use them anywhere as an object. Models are directly saved into database on a function call. It is designed to provide you the ease of writing code, easy structure, and reusability.
+            </p>
+          </section>
+          <section class="docs-section">
+            <h2 id="requirements" class="page-header">Requirements</h2>
+            <p>
+              <ul>
+                <li>Apache Server (PHP >= 7.0)</li>
+                <li>MySQl Database</li>
+              </ul>
+            </p>
+          </section>
+          <section class="docs-section">
+            <h2 id="installation" class="page-header">Installation</h2>
+            <h3 id="download">Download</h3>
+            <p>
+              To install:
+              <ol>
+                <li>Download the zip file</li>
+                <li>Extract into a folder</li>
+                <li>Copy the contents to your server (along with .htaccess)</li>
+                <li>Next step is to <a href="#configure" >configure</a></li>
+              </ol>
+            </p>
+            <h3 id="folder">Folder Structure</h3>
+            <pre><code>zoro-framework/
+├── assets/
+│   ├── css
+│   └── js
+|
+├── controllers/
+│   └── WebController.php
+│                
+├── inc/
+│   ├── init.php
+│   ├── load.php
+│   ├── functions.php
+│   ├── config.php
+│   ├── routes.php
+│   └── process.php
+│
+├── lib/
+│   ├── Cookie.class.php
+│   ├── Logger.class.php
+│   ├── SQL.class.php
+│   └── WebOptions.class.php
+│
+├── logs/
+├── models/
+│   └── Model.php
+│
+├── public/
+│   ├── images/
+│   └── files/
+│
+├── views/
+│   ├── layouts/
+│   │    ├── application.php
+│   └── partials/
+│
+├── .htaccess
+└── index.php</code></pre>
+
+            <h3 id="configure">Configure</h3>
+            <p>
+              First, open <em>inc/config.php</em> in any code editor, and add the values of following constants:
+            </p>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <strong>HOST</strong>
+                <br>
+                Set it to your domain with http/https protocol e.g https://www.xyz.com or in case, you're working on local environment in xyz folder, then it will be http://localhost/xyz/
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <strong>For SQL connection, set these config variables:</strong>
+                <br>
+                <ol>
+                  <li>SQL_HOST</li>
+                  <li>SQL_USERNAME</li>
+                  <li>SQL_PASSWORD</li>
+                  <li>SQL_DATABASE</li>
+                </ol>
+              </div>
+            </div>
+          </section>
+          <section class="docs-section">
+            <h3 id="getting-started" class="page-header">Getting Started</h3>
+            <h4>1. Create a route</h4>
+            <div class="panel">
+              <div class="panel-body">
+                <p>
+                  Open <em>inc/routes.php</em>. and write this code at the end, to create a route.
+                  <pre><code>&lt;?php 
+
+get("/test/",function(){
+  TestingController::index();
+});
+
+?&gt;</code></pre>
+                </p>
+                <p>This means that whenever you navigate to /test/, it will run the <b>index</b> function in the <b>TestingController</b></p>
+              </div>
+              <div class="panel-footer">
+                <div class="text-small">To know more about routes, navigate to <a href="#routing">routing</a></div>
+              </div>
+            </div>
+            <br>
+            <h4>2. Create the controller</h4>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p>
+                  Create the file <b>TestingController.php</b> in the controllers folder,
+                  and put the following code in it.
+                  <pre><code>&lt;?php 
+
+class TestingController extends WebController{
+  public static function index(){
+    static::render();
+  }
+}
+
+?&gt;</code></pre>
+                </p>
+                <p>Every controller should extend from WebController,  <b>render</b> is called here in index function, it will get the respective view from views folder and render it in the browser.</p>
+              </div>
+              <div class="panel-footer">
+                To learn more about controllers, navigate to <a href="#controllers">Controllers</a>
+              </div>
+            </div>
+            <br>
+            <h4>3. Create the view</h4>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p>
+                  <ul>
+                    <li>Navigate to views folder</li>
+                    <li>Create a folder named "Testing". (Folder names are based on controller naems)</li>
+                    <li>Create a file named "index.php" in <em>Testing</em> folder. (File names are based on function names)</li>
+                  </ul>
+                  Put the following code in that file:
+                  <pre><code>&lt;h1&gt;Testing ZORO MVC Framework&lt;/h1&gt;</code></pre>
+                </p>
+              </div>
+              <div class="panel-footer">
+                To learn more about views, navigate to <a href="">Views</a>
+              </div>
+            </div>
+            <h4>4. Now head to <em>http://your-host/test/</em> in your browser</h4>
+          </section>
+          <section class="docs-section">
+            <h2 id="routing" class="page-header">Routing</h2>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="basic-routing">Basic Routing</div>
+              <div class="panel-body">
+                <p>
+                  You can create routes in <em>inc/routes.php</em> <br>
+                  Two functions are available to create routes, <b>post</b> and <b>get</b>
+                  You can create any route and pass the function in second parameter, which will run whenever this route is requested
+                  <pre><code>get("/test",function(){
+  
+});
+
+post("/test",function(){
+  
+});</code></pre>
+                </p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="url-parameters">URL Parameters</div>
+              <div class="panel-body">
+                <p>If you want to pass parameters in URL, add your parameter in the route with a colon (:), like this</p>
+                <pre><code>get("/post/:handle",function($args){
+  echo $args["handle"];
+}):</code></pre>
+                <p>Any parameters you will pass in route, will be available in function in <b>$args array</b></p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="route-paths">Route Names and Paths</div>
+              <div class="panel-body">
+                <p>Any route you will create, will be available to you as a function in the whole application to output that specfic route url anywhere. <br>For example, following routes are created: </p>
+                <pre><code>get("/post/add/",function(){
+
+});
+get("/post/edit/:id",function(){
+  
+});
+get("/post/delete/:id",function(){
+  
+});</code></pre>
+                <p>Now, you can call the following functions anywhere to output the specific route/link/path in your application.</p>
+                <pre><code>post_add_path();  // will return /post/add/</code></pre>
+                <pre><code>post_edit_path( array( "id" => 2) );   // will return /post/edit/2</code></pre>
+                <pre><code>post_delete_path( array("id" => 2) );  // will return /post/delete/2</code></pre>
+                <p><b>Note: </b>You will have to pass the URI params in array to the functions</p>
+              </div>
+              <div class="panel-footer">
+                Hint: <em>You can check/output <b>$GLOBALS['route_paths']</b> to see, which path functions are available to you.</em>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="custom-paths">Custom Paths</div>
+              <div class="panel-body">
+                <p>If you want to give custom name to any route, or to make the same post/get routes different, you can pass the route name as the third parameter, like this:</p>
+                <pre><code>get("/post/add",function(){
+
+},"add_post");
+
+post("/post/add",function(){
+  
+},"save_post");</code></pre>
+                <p>Now these two paths will be available to you, as the two functions named:</p>
+                <pre><code>add_post_path();</code></pre>
+                <pre><code>save_post_path();</code></pre>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="error-404-path">404 path</div>
+              <div class="panel-body">
+                You must defined a route named 'error_404', so the framework can redirect any invalid request to that route. Define a 404 route like this:
+                <pre><code>get("/404",function(){
+  // Handle 404 request here
+},"error_404");</code></pre>
+              </div>
+              <div class="panel-footer">
+                <b>Note:</b> You must name the 404 route <em>'error_404'</em>
+              </div>
+            </div>
+          </section>
+          <section class="docs-section">
+            <h2 class="page-header" id="controllers">Controllers</h2>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="basic-controller">Basic</div>
+              <div class="panel-body">
+                <p>Controllers are placed in <em>controllers</em> folder. You can put the main data manipulation and other complex logic in controllers.</p>
+                <p>Every Controller should extend from <em>WebController</em> class</p>
+                <p>Member function of the controller class are called <b>actions</b></p>
+                <p>Every action in the controller should be declared as <b>static</b>, so you can call it in the <em>route.php</em> without creating an object</p>
+                <p>A basic controller with an action named <em>index</em> will look like this</p>
+                <pre><code>class HomeController extends WebController{
+  public static function index(){
+
+  }
+}</code></pre>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="rendering-view">Render View</div>
+              <div class="panel-body">
+                <p>To render the output in your action, call the render function at the end of your action like this:</p>
+                <pre><code>class HomeController extends WebController{
+  public static function index(){
+    // other stuff here
+    static::render();
+  }
+}</code></pre>
+                <p><em>render</em> will look in the views folder, and it will automatically render the <em>home/index.php</em> template in the browser. <br> This will use the default <em>application</em> layout</p>
+              </div>
+              <div class="panel-footer">
+                Wanna learn more about views, head to the <a href="#views">Views section</a>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="custom-views">Custom views</div>
+              <div class="panel-body">
+                <p>Calling render in any action will find the default view, for example if you call <em>render</em> in index function of HomeController, it will look for a file named <em>index</em> in the <em>home</em> folder.
+                <p>To use any custom view, pass the view path as the first parameter to render</p>
+                <p>Suppose we have a view file like this <em><code>views/other/home.php</code>, we use that view like this:</em></p>
+                <pre><code>class HomeController extends WebController{
+  public static function index(){
+    //other stuff to do here
+    static::render("other/home");
+  }
+}</code></pre>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="custom-layout">Custom Layout</div>
+              <div class="panel-body">
+                <p>Calling render in any action will use the default layout <code>application</code></p>
+                <p>Suppose you have another layout <code>page-layout.php</code> in layouts folder</p>
+                <p>To use any other layout, pass an array in second parameter like this:</p>
+                <pre><code>class HomeController extends WebController{
+  public static function index(){
+    // other stuff here
+    static::render(null,array("layout" => "page-layout") );
+  }
+}</code></pre>
+                <br><br>
+                <p>If you want to use a custom layout for all the actions in a controller, simply declare a static member variable named layout in that controller and assign it the value of your new layout, e.g: </p>
+                <pre><code>class HomeController extends WebController{
+  public static $layout = "page-layout";
+
+  public static function index(){
+    // other stuff here
+    static::render( );
+  }
+}</code></pre>
+              </div>
+              <div class="panel-footer">
+                Learn about layouts <a href="#layouts">here</a>
+              </div>
+            </div>
+          </section>
+          <section class="docs-section">
+            <h2 class="page-header" id="views">Views</h2>
+            <p>Views reside in the <code>views</code> folder</p>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="layouts">Layouts</div>
+              <div class="panel-body">
+                <p>Layouts are the files which contain universal code which outputs on every page, for example, header, sidebar, footer etc.</p>
+                <p>Layouts reside in <code>views/layouts/</code> folder.</p>
+                For example: 
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;&lt;/header&gt;
+
+    &lt;main role="main"&gt;
+      [@content]
+    &lt;/main&gt;
+
+    &lt;footer&gt;&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+                <p><code>[@content]</code> is important in the layout, because the respective view will be rendered where it is placed.</p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="creating-views">Creating Views: Guidelines</div>
+              <div class="panel-body">
+                <p>View files should be created in <code>views</code> folder.</p>
+                <p>View files should have <code>.php</code> extension</p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="variables-in-views">Variables in Views</div>
+              <div class="panel-body">
+                <p>MVC is made to display dynamic content based upon the request, so if you wanna access the data variables in your views, you can pass them along to render method in second parameter (array).</p>
+                <p>For example:</p>
+                <p>We have this code in controller.</p>
+                <pre><code>class HomeController extends WebController{
+  public static function index(){
+    $post = array(
+      "title"   => "Using the framework",
+      "content" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. At, iste."
+    );
+    static::render(null,array( "post" => $post ) );
+  }
+}</code></pre>
+                <p>Now, we can access the <code>$post</code> variable in our view like this:</p>
+                <pre><code>&lt;h1&gt;&lt;?php echo $post["title"]; ?&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;?php echo $post["content"]; ?&gt;</code></pre>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="partials">Partials</div>
+              <div class="panel-body">
+                <h4>What are partials</h4>
+                <p>The code which is used repeatedly in views is placed in partials, Partials are placed in <code>views/partials/</code> folder.</p>
+                <h4>Including Partials in views</h4>
+                <p>Suppose you have a partial file in <code>views/partials/home/header.php</code>, use the <code>render_partial</code> funtion to include that in your view anywhere.</p>
+                <pre><code>&lt;?php render_partial(array("path" => "home/header")); ?&gt;</code></pre>
+
+                <br>
+                <br>
+                <h4>Using variables in partials</h4>
+                <p>To use variables in partials, pass the variables along with the path in the array like this:</p>
+                <pre><code>&lt;?php render_partial(array("path" => "home/header", "menu" => $menu)); ?&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+          <section class="docs-section">
+            <h2 class="page-header" id="models">Models</h2>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="basic-model">Basic</div>
+              <div class="panel-body">
+                <p>Every entity in your application will be created as model.</p>
+                <p>Model classes are placed in <code>modes/</code> folder.</p>
+                <p>Every model class should extend from <code>Model</code> class</p>
+                <p>You should name your model file same as the class name, otherwise model won't load.</p>
+                <p>A very basic 'Book' model will look like this:</p>
+                <pre><code>class Book extends Model{
+  public function __construct($args=[]){
+    // properties go here
+    parent::__construct($args);
+  }
+}</code></pre>
+                <p><b>Note:</b> <em>In every model's constructor, you should call the parent constructor and pass the arguments to the parent constructor, so it can self assign the properties on the creation of new object of that model.</em></p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="adding-properties">Adding Properties</div>
+              <div class="panel-body">
+                <p>To add properties to your model, you can use the <code>add_property</code> method.</p>
+                <p><code>add_property</code> accepts these parameters:</p>
+                <ul>
+                  <li><b>property_name (required)</b>: Name of the property, same as the column name in sql database</li>
+                  <li><b>property_type (required)</b>: Type of the property, accepted: (string, integer, boolean, datetime)</li>
+                  <li><b>is_protected (optional)</b>: If it can be changed or not (default = false)</li>
+                  <li><b>is_primary_key (optional)</b>: If it is a primary key (default = false)</li>
+                  <li><b>is_unique (optional)</b>: If it is a unique property (default = false)</li>
+                  <li><b>is_encrypted (optional)</b>: If it is an encrypted field (default = false)</li>
+                </ul>
+                <code>add_property($property_name, $property_type, $is_protected, $is_primary, $is_unique, $is_encrypted)</code>
+                <p>Suppose, we have a <code>User</code> model class like this:</p>
+                <pre><code>class User extends Model{
+  public function __construct($args=[]){
+    $this->add_property("id","integer",true,true,false,false);
+    $this->add_property("username","string",false,false,true,false);
+    $this->add_property("first_name","string");
+    $this->add_property("last_name","string");
+    $this->add_property("password","string",false,false,false,true); // password will be automatically encrypted
+    $this->add_property("email","string");
+  }
+}</code></pre>
+              </div>
+              <div class="panel-footer">Note: You should first create table in sql database, then create these properties according to that table</div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="encryption">Encryption of Properties</div>
+              <div class="panel-body">
+                <p>When you specify encryption for any property in <code>add_property</code> method, zoro used it's default encryption method and saves that property value after encryption in database. It uses default <b>md5</b> encryption. If you want to use your custom encryption for any model, define a method named <code>encrypt</code> in your model, like this:</p>-
+                <pre><code>class User extends Model{
+  public function __construct($args=[]){
+    $this->add_property("id","integer",true,true,false,false);
+    $this->add_property("username","string",false,false,true,false);
+    $this->add_property("first_name","string");
+    $this->add_property("last_name","string");
+    $this->add_property("password","string",false,false,false,true); // password will be automatically encrypted
+    $this->add_property("email","string");
+  }
+  public function encrypt($value){
+    return md5($value);
+  }
+}</code></pre>
+                <p><code>encrypt</code> should take one parameter and return that in encrypted form.</p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="model-operations">Model Operations</div>
+              <div class="panel-body">
+                <p>Suppose, we have a model <code>Book</code>, with the id,title and author properties, we can perform following operations, on it.</p>
+                <h4>Create</h4>
+                <pre><code>$book = new Book();</code></pre>
+                or 
+                <pre><code>$book = new Book(array(
+  "title" => "Learn Programming",
+  "author"=> "John Doe"
+))</code></pre>
+                <br>
+                <h4>Accessing/Modifying Properties</h4>
+                <pre><code>$book->title = "Learn programming in 24 hours";<br>echo $book->title;</code></pre>
+                <br>
+                <h4>Saving object</h4>
+                <pre><code>$book->save();   # saves object in database</code></pre>
+                <br>
+                <h4>Deleting object</h4>
+                <pre><code>$book->destroy(); # deletes the object from database</code></pre>
+                <br>
+                <h4>Copying object</h4>
+                <pre><code>$other_book = $book->clone(); </code></pre>
+                <p><code>clone</code> returns a copy of object, it does not save the object in database. You will have to call <code>save</code> on the clone object to save it in database.</p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="retrieving-objects">Retrieving objects from database</div>
+              <div class="panel-body">
+                <h4>all</h4>
+                <p>Calling all will return all objects of the respective model from database</p>
+                <pre><code>$books = Book::all();</code></pre>
+                <br>
+                <h4>find</h4>
+                <p>You can use <code>find</code> method to search the objects from database with id</p>
+                <pre><code>$book = Book::find(2);  // will retrieve the book with id 2</code></pre>
+                <br>
+                <h4>find_by</h4>
+                <p>You can search an object with value of another column instead of searching by id.</p>
+                <pre><code>$book = Book::find_by("author","John Doe");  // will retrieve book which has author john doe</code></pre>
+              </div>
+              <div class="panel-footer">
+                <b>Note:</b><em>If multiple results, it will return an array of objects.</em>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="load-object">Load</div>
+              <div class="panel-body">
+                <p><code>load</code> is use to load the copy of the object from database, overwriting your non-saved changes. <br>For example:</p>
+                <pre><code>$book = Book::find_by("title","Programming in C"); <br>$book->title = "Programming in C++"; <br><br>$book->load(); // This will load the title again from database</code></pre>
+              </div>
+            </div>
+          </section>
+          <section class="docs-section">
+            <h2 class="page-header" id="libraries">Libraries</h2>
+            <p>
+              <ul>
+                <li>Libraries are placed in <code>libs/</code> folder</li>
+                <li>Libraries file name should be the same as class name but with <code>.class.php</code> extesnion, e.g SQL.class.php</li>
+                <li>Library class name should end with Lib, e.g SQLLib</li>
+                <li>If upper naming conventions are not followed, it will prevent the library to load in the framework</li>
+              </ul>
+            </p>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="sql">SQL Library</div>
+              <div class="panel-body">
+                As zoro is built in PHP 7.0, it uses PDO to interact with sql database. 
+                <h3>Methods:</h3>
+                <p>
+                  <em><b>select</b></em><br>
+                  <p>
+                    You can do select query by simply calling the select method. It accepts the following paramters: <br>
+                    <code>select( $table_name,$columns,$where=null,$args=null,$query_order="DESC" )</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table name</li>
+                    <li><b>columns</b>: array of columns to select</li>
+                    <li><b>where</b>: array of columns if you want to specify a condition</li>
+                    <li><b>args</b>: array of values of the columns specified in where parameter</li>
+                    <li><b>query_order</b>: ASC or DESC</li>
+                  </ul>
+                  <pre><code>// SELECT * FROM books; <br>$books = SQLLib::select( "books","*"); <br><br>// SELECT * FROM books WHERE author='John Doe';<br>$books = SQLLib::select("books","*",array("author"),array("John Doe")); <br><br>// SELECT title,author FROM books; <br>$books = SQLLib::select("books",array('title','author'));</code></pre>
+                </p>
+                <br>
+                <p>
+                  <em><b>insert</b></em><br>
+                  <p>
+                    Insert data in table. It accepts following parameters: <br>
+                    <code>insert($table_name,$columns,$values)</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table Name</li>
+                    <li><b>columns</b>: Array of column names to insert</li>
+                    <li><b>values</b>: Values to insert in the columns specified in second parameter</li>
+                  </ul>
+                  <pre><code>// INSERT INTO books (id,title,author) VALUES(null,"Learn Programming", "John Doe"); <br> <br>SQLLib::insert("books",array("id","title","author"),array(null,"Learn Programming","John Doe"));</code></pre>
+                </p>
+                <br>
+                <p>
+                  <em><b>update</b></em>
+                  <p>
+                    Update column based on row id.  <br>
+                    <code>update($table_name, $id, $col, $val)</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table name </li>
+                    <li><b>id</b>: id of the row for which to update</li>
+                    <li><b>col</b>: column name of which value to update</li>
+                    <li><b>val</b>: new value</li>
+                  </ul>
+                  <pre><code>// UPDATE books SET title="Learn Programming in 24 hours" WHERE id=2 <br><br>SQLLib::update("books",2,"title","Learn Programming in 24 hours");</code></pre>
+                </p>
+                <br>
+                <p>
+                  <em><b>update_where</b></em>
+                  <p>
+                    Update column based on column you specify.  <br>
+                    <code>update_where($table_name,$col,$val,$col_where,$val_where)</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table name </li>
+                    <li><b>col</b>: column name of which value to update</li>
+                    <li><b>val</b>: new value</li>
+                    <li><b>col_where</b>: condition column to specify in where clause</li>
+                    <li><b>val_where</b>: value of condition column to specify in where clause</li>
+                  </ul>
+                  <pre><code>// UPDATE books SET title="Learn Programming in 24 hours" WHERE title="Learn Programming" <br><br>SQLLib::update_where("books","title","Learn Programming in 24 hours","title","Learn Programming");</code></pre>
+                </p>
+                <br>
+                <p>
+                  <em><b>delete</b></em>
+                  <p>
+                    Delete column based on id you specify.  <br>
+                    <code>delete($table_name,$id)</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table name </li>
+                    <li><b>id</b>: id of the row to delete</li>
+                  </ul>
+                  <pre><code>// DELETE FROM books WHERE id=2 <br><br>SQLLib::delete("books",2);</code></pre>
+                </p>
+                <br>
+                <p>
+                  <em><b>delete_where</b></em>
+                  <p>
+                    Delete column based on column you specify.  <br>
+                    <code>delete_where($table_name,$col_where,$val_where)</code>
+                  </p>
+                  <ul>
+                    <li><b>table_name</b>: Table name </li>
+                    <li><b>col_where</b>: condition column to specify in where clause</li>
+                    <li><b>val_where</b>: value of condition column to specify in where clause</li>
+                  </ul>
+                  <pre><code>// DELETE FROM books WHERE title="Learn Programming"<br><br>SQLLib::delete_where("books","title","Learn Programming");</code></pre>
+                </p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="WebOptions">Options Library</div>
+              <div class="panel-body">
+                <p>It is use to save your application's global and general options/values in database.</p>
+                <p>Options library is available to you in the whole framework (Controllers and views) in the <code>$options</code> variable. <br>
+                  You can call following methods on <code>$options</code> variable:</p>
+
+                <p>
+                  <b><em>save_option</em></b>
+                  <p>Save any option/value in database. It accepts two parameters: <br><code>save_option($name,$value)</code></p>
+                  <ul>
+                    <li><b>$name</b>: Key of the option ( Should be without spaces, use underscores and lowcase letters )</li>
+                    <li><b>$value</b>: Value of the option</li>
+                  </ul>
+                  <pre><code>// Saving the site title in database to show on homepage <br><br>$options->save_option("site_title","Learn Programming");</code></pre>
+                </p>
+                <br>
+                <p>
+                  <b><em>get_option</em></b>
+                  <p>Get any option/value from database. It accepts one parameter: <br><code>get_option($name)</code></p>
+                  <ul>
+                    <li><b>$name</b>: Key of the option</li>
+                  </ul>
+                  <pre><code>// Getting the site title from database to show on homepage <br><br>echo $options->get_option("site_title");</code></pre>
+                </p>
+              </div>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading" id="cookiesLib">Cookies Library</div>
+              <div class="panel-body">
+                <p>
+                  Cookies Library is available in controllers, to save/retrieve cookies from user. <br>
+                </p>
+                <div class="alert alert-info">
+                  It is important that you should set cookies before sending any data to browser.
+                </div>
+                <p>
+                  <b><em>set</em></b>
+                  <p>Sets the cookie in user's browser <br><code>set($key, $value, $seconds = 86400)</code></p>
+                  <ul>
+                    <li><b>key</b>: Key of the cookie</li>
+                    <li><b>value</b>: Value of the cookie to save</li>
+                    <li><b>seconds</b>: Time for cookie to expire in seconds</li>
+                  </ul>
+                  <pre><code>CookieLib::set('token',"2398dfs97df9sdf9",3600);</code></pre>
+                </p>
+                <br>
+                <p>
+                  <b><em>get</em></b>
+                  <p>Get the cookie from user's browser <br><code>get($key)</code></p>
+                  <ul>
+                    <li><b>key</b>: Key of the cookie</li>
+                  </ul>
+                  <pre><code>CookieLib::get('token');</code></pre>
+                </p>
+                <br>
+                <p>
+                  <b><em>delete</em></b>
+                  <p>Delete the cookie from user's browser <br><code>delete($key)</code></p>
+                  <ul>
+                    <li><b>key</b>: Key of the cookie</li>
+                  </ul>
+                  <pre><code>CookieLib::delete('token');</code></pre>
+                </p>
+                <br>
+                <p>
+                  <b><em>flush</em></b>
+                  <p>Flushes/Deletes all the cookies from user's browser <br><code>get($key)</code></p>
+                  <pre><code>CookieLib::flush();</code></pre>
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <nav id="nav" role="nav" class="navigation hidden-sm hidden-xs" data-spy="affix" data-offset-top="60" data-offset-bottom="20">
+            <ul class="nav">
+              <li><a href="#intro">Introduction</a></li>
+              <li><a href="#requirements">Requirements</a></li>
+              <li>
+                <a href="#installation">Installation</a>
+                <ul class="nav">
+                  <li><a href="#download">Download</a></li>
+                  <li><a href="#folder">Folder Structure</a></li>
+                  <li><a href="#configure">Configure</a></li>
+                </ul>
+              </li>
+              <li><a href="#getting-started">Getting Started</a></li>
+              <li>
+                <a href="#routing">Routing</a>
+                <ul class="nav">
+                  <li><a href="#basic-routing">Basic</a></li>
+                  <li><a href="#url-parameters">URL Parameters</a></li>
+                  <li><a href="#route-paths">Paths</a></li>
+                  <li><a href="#custom-paths">Custom Paths</a></li>
+                  <li><a href="#error-404-path">404</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#controllers">Controllers</a>
+                <ul class="nav">
+                  <li><a href="#basic-controller">Basic</a></li>
+                  <li><a href="#rendering-view">Render View</a></li>
+                  <li><a href="#custom-views">Custom Views</a></li>
+                  <li><a href="#custom-layout">Custom Layout</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#views">Views</a>
+                <ul class="nav">
+                  <li><a href="#layouts">Layouts</a></li>
+                  <li><a href="#creating-views">Creating Views</a></li>
+                  <li><a href="#variables-in-views">Using variables in views</a></li>
+                  <li><a href="#partials">Partials</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#models">Models</a>
+                <ul class="nav">
+                  <li><a href="#basic">Basic</a></li>
+                  <li><a href="#adding-properties">Adding Properties</a></li>
+                  <li><a href="#encryption">Encryption</a></li>
+                  <li><a href="#model-operations">Operations</a></li>
+                  <li><a href="#retrieving-objects">Retrieving objects from database</a></li>
+                  <li><a href="#load-object">Load</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#libraries">Libraries</a>
+                <ul class="nav">
+                  <li><a href="#sql">SQL</a></li>
+                  <li><a href="#WebOptions">Options</a></li>
+                  <li><a href="#cookiesLib">Cookies</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <footer class="site-footer">
+            <div class="text-left">
+              Made with ❤ by <a href="http://www.aakashahmed.com">Aakash Ahmed</a>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+      .navbar{
+        background: none;
+        border-radius: 0px;
+        border: 0px solid;
+        border-bottom: 1px solid #ccc;
+      }
+      .navbar-brand>img{
+        display: block;
+        height: 26px;
+      }
+      .navigation>ul{
+        margin-top: 0px;
+        margin-bottom :0px;
+      }
+      .navigation .nav .nav{
+        display: none;
+        padding-bottom: 10px;
+      }
+      .navigation .nav>li>a{
+        display: block;
+        padding: 4px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #767676;
+      }
+      .navigation .nav>.active>a{
+        padding-left: 18px;
+        font-weight: 700;
+        color: #563d7c;
+        background-color: transparent;
+        border-left: 2px solid #563d7c;
+      }
+
+      .navigation .nav .nav>li>a{
+        padding-top: 1px;
+        padding-bottom: 1px;
+        padding-left: 30px;
+        font-size: 12px;
+        font-weight: 400;
+      }
+      .navigation .nav .nav>.active>a{
+        padding-left: 28px;
+        font-weight: 500;
+      }
+      .navigation .nav>.active>ul{
+        display: block;
+      }
+      
+      section.docs-section{
+        margin-bottom: 60px;
+      }
+      .page-header{
+        padding-bottom: 9px;
+        margin: 40px 0 20px;
+        border-bottom: 1px solid #eee;
+      }
+      .site-footer{
+        padding: 20px 10px;
+      }
+      @media all and (min-width:992px){
+        .navigation.affix{
+          position: fixed!important;
+          top: 20px;
+        }
+        .navigation{
+          width: 213px;
+          padding-left: 20px;
+          position: relative;
+          top: 20px;
+        }
+
+      }
+    </style>
+    <script>
+      
+    </script>
+  </body>
+</html>
